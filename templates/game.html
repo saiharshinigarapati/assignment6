@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Piles of Stones</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Piles of Stones</h1>
+    <p>Piles: {{ game_state['piles'] }}</p>
+    <p>Player 1: {{ game_state['player_scores'][0] }}</p>
+    <p>Player 2: {{ game_state['player_scores'][1] }}</p>
+    <p>Current player: {{ game_state['current_player'] }}</p>
+    <p>Max pickup: {{ game_state['max_pickup'] }}</p>
+    <form action="/make_move" method="post">
+        <label for="pile_index">Pile:</label>
+        <select name="pile_index" id="pile_index">
+            <option value="0">Pile 1</option>
+            <option value="1">Pile 2</option>
+            <option value="2">Pile 3</option>
+        </select>
+        <label for="num_stones">Number of stones:</label>
+        <input type="number" name="num_stones" id="num_stones" min="1" max="{{ game_state['max_pickup'] }}" required>
+        <input type="hidden" name="num_stones" value="{{ game_state['num_stones'] }}">
+        <input type="hidden" name="current_player" value="{{ game_state['current_player'] }}">
+        <input type="hidden" name="max_pickup" value="{{ game_state['max_pickup'] }}">
+        <input type="hidden" name="pile1" value="{{ game_state['piles'][0] }}">
+        <input type="hidden" name="pile2" value="{{ game_state['piles'][1] }}">
+        <input type="hidden" name="pile3" value="{{ game_state['piles'][2] }}">
+        <input type="hidden" name="score1" value="{{ game_state['player_scores'][0] }}">
+        <input type="hidden" name="score2" value="{{ game_state['player_scores'][1] }}">
+        <button type="submit">Make move</button>
+    </form>
+    <script>
+  
+       
+        var roundStartTime = {{ game_state['round_start_time'] }};
+        var roundDuration = {{ game_state['max_round_duration'] }};
+        var countdownElement = document.getElementById('countdown');
+        var countdownInterval = setInterval(function() {
+            var timeRemaining = Math.max(roundDuration - (Date.now() - roundStartTime), 0);
+            countdownElement.innerText = Math.floor(timeRemaining / 1000);
+            if (timeRemaining <= 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('move_form').submit();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

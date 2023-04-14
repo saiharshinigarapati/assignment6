@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Piles of Stones</title>
+</head>
+<body>
+    <h1>Round over</h1>
+    <p>Round duration: {{ round_duration }} seconds</p>
+    <form action="/start_game" method="post">
+        <label for="num_stones">Number of stones:</label>
+        <input type="number" name="num_stones" id="num_stones" required>
+        <button type="submit">Start new game</button>
+    </form>
+</body>
+</html>
